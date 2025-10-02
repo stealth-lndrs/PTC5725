@@ -1,7 +1,7 @@
-# PCS5029 – Métodos Espectrais · Relatórios e Códigos
+# PTC5725 – Métodos Espectrais · Relatórios e Códigos
 
 > **Autor:** Renan de Luca Avila  
-> **Disciplina:** *PCS5029 – Introdução aos Métodos Espectrais (EPUSP)*  
+> **Disciplina:** *PTC5725 – Introdução aos Métodos Espectrais (EPUSP)*  
 > **Escopo:** Relatórios em LaTeX + código Python reprodutível para interpolação, matrizes de diferenciação e método baricêntrico (e demais tópicos ao longo do curso).
 
 Última data de atualização: 01/10/2025.
