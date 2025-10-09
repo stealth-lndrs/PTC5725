@@ -1,0 +1,20 @@
+
+\begin{table}[h!]\centering
+\caption{Benchmark estrito (20 repetições): Python vs Julia para DCT-I (apenas execução).}
+\label{tab:bench_python_julia_strict}
+\begin{tabular}{rrrrrrrr}
+\toprule
+$n$ & \multicolumn{3}{c}{Python (s)} & \multicolumn{3}{c}{Julia (s)} & \textbf{Speedup} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+    & média & std & IC95 & média & std & IC95 & Julia/Python \\
+\midrule
+64 & 1.381e-05 & 3.70e-06 & 1.83e-06 & 4.762e-07 & 1.08e-09 & 4.73e-10 & 0.03 \\
+128 & 1.551e-05 & 2.30e-06 & 1.15e-06 & 1.411e-06 & 6.72e-09 & 2.95e-09 & 0.09 \\
+256 & 2.374e-05 & 2.10e-05 & 1.03e-05 & 4.599e-06 & 3.38e-08 & 1.48e-08 & 0.19 \\
+512 & 2.477e-05 & 6.00e-07 & 2.95e-07 & 3.496e-06 & 3.49e-09 & 1.53e-09 & 0.14 \\
+1024 & 4.893e-05 & 4.50e-05 & 2.20e-05 & 1.066e-05 & 2.03e-08 & 8.90e-09 & 0.22 \\
+2048 & 7.144e-05 & 1.20e-05 & 6.10e-06 & 7.107e-05 & 4.87e-08 & 2.13e-08 & 0.99 \\
+4096 & 2.771e-04 & 4.20e-05 & 2.05e-05 & 9.009e-05 & 2.10e-07 & 9.19e-08 & 0.33 \\
+\bottomrule
+    \end{tabular}
+    \end{table}

@@ -1,0 +1,14 @@
+{
+  "python_version": "3.12.10",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.31",
+  "processor": "x86_64",
+  "machine": "x86_64",
+  "architecture": [
+    "64bit",
+    "ELF"
+  ],
+  "cpu_count_logical": 16,
+  "cpu_count_physical": 8,
+  "cpu_freq_mhz": 2304.01,
+  "ram_total_gb": 7.63
+}
