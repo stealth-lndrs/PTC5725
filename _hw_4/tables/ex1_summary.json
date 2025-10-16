@@ -1,0 +1,7 @@
+{
+  "N": 96,
+  "iterations": 5,
+  "step_inf_norm": 5.6442032499354176e-14,
+  "residual_inf_norm": 2.877276195079048e-10,
+  "residual_L2_norm": 4.6439197453649033e-11
+}
