@@ -1,0 +1,4 @@
+Condicao_de_Contorno,n,Max_erro_infinito
+Dirichlet,31,1.0627609903224311e-13
+Neumann,31,1.0579315201653117e-12
+Robin,31,8.895106873296754e-13
