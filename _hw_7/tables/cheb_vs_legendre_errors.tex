@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\caption{Comparação dos erros relativos médios entre as quadraturas de Chebyshev (Tipos I e II) e Gauss–Legendre para as funções de teste \(e^x\) e \(\sin(\pi x)\) no intervalo \([-1,1]\). Observa-se que o método de Gauss–Legendre apresenta erros próximos ao limite numérico de máquina, enquanto os métodos de Chebyshev convergem de forma previsível conforme o aumento de \(n\).}
+\label{tab:cheb_vs_legendre_errors}
+\begin{tabular}{lrr}
+\toprule
+     Regra &  $n$ &  Erro relativo médio \\
+\midrule
+cheb\_gauss &    4 &            1.805e-02 \\
+cheb\_type2 &    4 &            2.211e-02 \\
+  legendre &    4 &            6.278e-08 \\
+cheb\_gauss &    8 &            4.283e-03 \\
+cheb\_type2 &    8 &            6.712e-03 \\
+  legendre &    8 &            1.254e-16 \\
+cheb\_gauss &   16 &            1.059e-03 \\
+cheb\_type2 &   16 &            1.872e-03 \\
+  legendre &   16 &            8.674e-18 \\
+cheb\_gauss &   32 &            2.639e-04 \\
+cheb\_type2 &   32 &            4.961e-04 \\
+  legendre &   32 &            6.072e-18 \\
+\bottomrule
+\end{tabular}
+\end{table}

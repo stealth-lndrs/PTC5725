@@ -1,0 +1,16 @@
+\begin{table}
+\centering
+\caption{Erros relativos para I4}
+\label{tab:errors_I4}
+\begin{tabular}{llllll}
+\toprule
+method & Clenshaw-Curtis &   Fejer-I & Gauss-Legendre & Gauss-Lobatto & Gauss-Radau \\
+n  &                 &           &                &               &             \\
+\midrule
+4  &        1.44e-05 &  3.66e-06 &       5.03e-11 &      7.72e-08 &    2.04e-09 \\
+8  &        8.62e-13 &  1.08e-12 &       4.18e-16 &      4.18e-16 &    1.67e-15 \\
+16 &        2.22e-16 &  8.36e-16 &       4.18e-16 &      1.39e-16 &    9.20e-15 \\
+32 &        2.79e-16 &  2.79e-16 &       6.97e-16 &      2.79e-16 &    5.49e-14 \\
+\bottomrule
+\end{tabular}
+\end{table}

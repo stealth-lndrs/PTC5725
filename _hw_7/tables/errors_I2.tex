@@ -1,0 +1,16 @@
+\begin{table}
+\centering
+\caption{Erros relativos para I2}
+\label{tab:errors_I2}
+\begin{tabular}{llllll}
+\toprule
+method & Clenshaw-Curtis &   Fejer-I & Gauss-Legendre & Gauss-Lobatto & Gauss-Radau \\
+n  &                 &           &                &               &             \\
+\midrule
+4  &        1.67e-05 &  4.11e-06 &       5.91e-11 &      8.97e-08 &    1.16e-09 \\
+8  &        1.01e-12 &  1.26e-12 &       2.35e-16 &      2.35e-16 &    1.76e-15 \\
+16 &        1.17e-16 &  1.17e-16 &       1.17e-16 &      2.22e-16 &    7.51e-15 \\
+32 &        1.17e-16 &  1.17e-16 &       1.17e-16 &      1.17e-16 &    4.55e-14 \\
+\bottomrule
+\end{tabular}
+\end{table}
