@@ -1,0 +1,65 @@
+\subsection{Resultados da quadratura de Chebyshev--Lobatto}
+\label{subsec:cheb_lobatto_results}
+
+A Tabela~\ref{tab:cheb_lobatto_results} reproduz os valores numéricos obtidos ao
+executar o script \texttt{exercise01\_cheb\_lobatto.jl} com a quadratura
+Chebyshev--Lobatto personalizada (agora com pesos corretos). Cada linha apresenta
+a ordem $n$, o valor computado, a referência analítica e os erros absoluto e
+relativo.
+
+\begin{table}[h]
+    \centering
+    \caption{Resultados da quadratura de Chebyshev--Lobatto}
+    \label{tab:cheb_lobatto_results}
+    \begin{tabular}{lrrrrr}
+        \toprule
+        integrando & $n$ & numérico & exato & erro abs. & erro rel. \\
+        \midrule
+        Integral de 1 & 10 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
+        Integral de 1 & 20 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
+        Integral de 1 & 40 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
+        Integral de 1 & 80 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
+        Integral de 1 & 160 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
+        Integral de $x$ & 10 & $-1{,}67\times10^{-16}$ & 0{,}0 & $1{,}67\times10^{-16}$ & --- \\
+        Integral de $x$ & 20 & $-1{,}67\times10^{-16}$ & 0{,}0 & $1{,}67\times10^{-16}$ & --- \\
+        Integral de $x$ & 40 & $-2{,}36\times10^{-16}$ & 0{,}0 & $2{,}36\times10^{-16}$ & --- \\
+        Integral de $x$ & 80 & $-2{,}50\times10^{-16}$ & 0{,}0 & $2{,}50\times10^{-16}$ & --- \\
+        Integral de $x$ & 160 & $-2{,}81\times10^{-16}$ & 0{,}0 & $2{,}81\times10^{-16}$ & --- \\
+        Integral de $x^{2}$ & 10 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
+        Integral de $x^{2}$ & 20 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
+        Integral de $x^{2}$ & 40 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
+        Integral de $x^{2}$ & 80 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
+        Integral de $x^{2}$ & 160 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
+        Integral de $\sqrt{1-x^{2}}$ & 10 & 1{,}98352354 & 1{,}57079633 & 0{,}41272721 & 0{,}26275030 \\
+        Integral de $\sqrt{1-x^{2}}$ & 20 & 1{,}99588597 & 1{,}57079633 & 0{,}42508965 & 0{,}27062047 \\
+        Integral de $\sqrt{1-x^{2}}$ & 40 & 1{,}99897181 & 1{,}57079633 & 0{,}42817548 & 0{,}27258498 \\
+        Integral de $\sqrt{1-x^{2}}$ & 80 & 1{,}99974297 & 1{,}57079633 & 0{,}42894665 & 0{,}27307592 \\
+        Integral de $\sqrt{1-x^{2}}$ & 160 & 1{,}99993574 & 1{,}57079633 & 0{,}42913942 & 0{,}27319864 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{Comparação com as integrais analíticas.}
+Com os pesos corretos, $I_a = \int_{-1}^{1} 1\,\mathrm{d}x = 2$ é superestimada
+por aproximadamente $57\%$, ficando fixa em $\pi$ independentemente de $n$. O
+integrando ímpar $I_b = \int_{-1}^{1} x\,\mathrm{d}x = 0$ continua em zero
+numérico, com erros apenas de arredondamento ($10^{-16}$). Os integrandos pares
+$I_c = 2/3$ e $I_d = \pi/2$ também são superestimados por fatores constantes:
+$I_c$ recebe sempre $\approx 1{,}57$ (erro relativo $\approx 136\%$) e $I_d$
+fica entre $1{,}98$ e $2{,}00$ (erro relativo $\approx 27\%$). Assim, mesmo
+com pesos corretos, a regra não reproduz os valores analíticos a menos que a
+função seja ímpar.
+
+\paragraph{Explicação.}
+Os pesos especificados são $w_0 = w_n = \pi/(2n)$ e
+$w_k = \pi/n$ para $k=1,\dots,n-1$. Somando-os obtemos
+\[
+\sum_{k=0}^{n} w_k = \frac{\pi}{2n} + (n-1)\frac{\pi}{n} + \frac{\pi}{2n} = \pi,
+\]
+ou seja, o peso total da regra é $\pi$ em vez de $2$. Consequentemente, qualquer
+integrando par tende a reproduzir $\int_{-1}^{1} f(x)\,\mathrm{d}x \approx
+(\pi/2)\,f(0)$, produzindo superestimações constantes que não desaparecem com
+o refinamento. Apenas funções ímpares têm integral nula porque os nós de
+Chebyshev--Lobatto permanecem simétricos. Logo, os resultados são compatíveis
+com a teoria: a diferença principal está no fator de normalização imposto pelos
+novos pesos.
