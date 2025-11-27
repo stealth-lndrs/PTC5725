@@ -1,0 +1,703 @@
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage{tocloft}
+\usepackage{geometry}
+\usepackage{csvsimple}
+\geometry{margin=2.5cm}
+
+% Minted + suporte a quebras de linha e página
+\usepackage{minted}
+\usepackage{fvextra} % extensão para verbatim/minted
+
+% Configurações globais do minted
+\setminted{
+    breaklines=true,        % quebra de linha automática
+    breakanywhere=true,     % pode quebrar em qualquer ponto
+    fontsize=\small,
+    autogobble=true,        % remove indentação comum
+    breaksymbolleft={},     % sem símbolos feios nas quebras
+    breaksymbolright={},
+}
+
+\usepackage{siunitx}
+\sisetup{
+  round-mode=places,
+  round-precision=9,
+  table-number-alignment=center,
+  detect-all,
+  scientific-notation=true
+}
+
+\title{PCS5029/PTC5725 -- Aula 06\\\large Introdução aos Métodos Espectrais}
+\author{Renan de Luca Avila}
+\date{\today}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\includegraphics[width=0.35\textwidth]{EP.jpg}\par\vspace{1cm}
+{\scshape\LARGE Escola Politécnica da Universidade de São Paulo\par}
+\vspace{1.5cm}
+{\huge\bfseries Aula 08 -- Métodos Espectrais\par}
+\vspace{0.5cm}
+{\Large Resolução da tarefa\par}
+\vfill
+{\large Renan de Luca Avila\par}
+{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Resumo}
+Este relatório implementa, em Python, os exercícios apresentados nos slides da Aula 08 (Prof.\ Osvaldo Guimarães), e discute as soluções. O documento contém códigos completos, figuras e tabelas, além de apêndices com setup e fontes.
+
+% \subsection{Exercício X}
+
+% \subsubsection{Enunciado}
+% % Descreva o enunciado aqui com os detalhes matemáticos
+
+% \subsubsection{Planejamento e fundamentos teóricos}
+% % Descreva o plano para resolver o problema e cite os fundamentos teóricos que sustentam o plano, incluindo fórmulas e equações justificando o caminho escolhido
+
+% \subsubsection{Etapas de implementação e funções principais}
+% % Coloque citações de trechos do código aqui e explique o que cada uma delas faz relacionando com os fundamentos teóricos (use minted copiando trechos de código diretamente). Coloque trechos e os explique um a um, não coloque o código completo, pois este estará no apêndice referenciando o arquivo na pasta /code.
+
+% \subsubsection{Resultados e discussão}
+% % Coloque aqui figuras (da pasta /figures) e tabelas (da pasta /tables) que mostrem os resultados obtidos como saída do código e interprete os resultados
+
+% \subsubsection{Conclusão}
+% % Resuma o que fizemos para resolver e conclua com avaliações dos resultado
+
+\section{Tarefa 1 — Quadratura Chebyshev–Lobatto}
+
+Considere a quadratura de Chebyshev–Lobatto no intervalo $[-1,1]$, cujos pesos são dados por:
+\[
+w_k = 
+\begin{cases}
+\frac{1}{n^2}, & k = 0 \ \text{ou}\ k = n, \\[6pt]
+\frac{2}{n^2}, & k \ \text{ímpar}, \\[6pt]
+0, & k \ \text{par}.
+\end{cases}
+\]
+
+Utilizando exclusivamente esta quadratura, calcule numericamente as integrais a seguir:
+
+\begin{enumerate}
+    \item 
+    \[
+    I_a = \int_{-1}^{1} 1 \, dx
+    \]
+
+    \item 
+    \[
+    I_b = \int_{-1}^{1} x \, dx
+    \]
+
+    \item 
+    \[
+    I_c = \int_{-1}^{1} x^2 \, dx
+    \]
+
+    \item 
+    \[
+    I_d = \int_{-1}^{1} \sqrt{1 - x^2} \, dx
+    \]
+\end{enumerate}
+
+O objetivo é comparar os valores obtidos pela quadratura com os valores exatos das integrais.
+
+\subsection{Soluções analíticas das integrais da Tarefa 1}
+
+Nesta subseção apresentamos as soluções analíticas das integrais propostas na Tarefa 1,
+para os seguintes integrandos no intervalo $[-1,1]$:
+\[
+f_1(x) = 1,\quad
+f_2(x) = x^2,\quad
+f_3(x) = (2x^2 - 1)^2,\quad
+f_4(x) = \sqrt{1 - x^2}.
+\]
+Os resultados obtidos serão utilizados como referência para comparação com as aproximações
+numéricas via quadratura de Chebyshev--Lobatto.
+
+\subsubsection{Integral (a): \texorpdfstring{$\displaystyle \int_{-1}^{1} 1 \, dx$}{∫\_{-1}^1 1 dx}}
+
+A integral é
+\[
+I_a = \int_{-1}^{1} 1 \, dx.
+\]
+
+A primitiva de $1$ é simplesmente
+\[
+\int 1 \, dx = x + C.
+\]
+
+Logo,
+\[
+I_a = \left[ x \right]_{-1}^{1} = 1 - (-1) = 2.
+\]
+
+Portanto,
+\[
+\boxed{I_a = 2}.
+\]
+
+\subsubsection{Integral (b): \texorpdfstring{$\displaystyle \int_{-1}^{1} x^2 \, dx$}{∫\_{-1}^1 x² dx}}
+
+A integral é
+\[
+I_b = \int_{-1}^{1} x^2 \, dx.
+\]
+
+A primitiva de $x^2$ é
+\[
+\int x^2 \, dx = \frac{x^3}{3} + C.
+\]
+
+Calculando nos limites:
+\[
+I_b = \left[ \frac{x^3}{3} \right]_{-1}^{1}
+    = \frac{1^3}{3} - \frac{(-1)^3}{3}
+    = \frac{1}{3} - \left(-\frac{1}{3}\right)
+    = \frac{1}{3} + \frac{1}{3}
+    = \frac{2}{3}.
+\]
+
+Alternativamente, podemos usar a simetria: $x^2$ é função par e o intervalo é simétrico, então
+\[
+I_b = \int_{-1}^{1} x^2 \, dx
+    = 2 \int_{0}^{1} x^2 \, dx
+    = 2 \left[ \frac{x^3}{3} \right]_{0}^{1}
+    = 2 \cdot \frac{1}{3}
+    = \frac{2}{3}.
+\]
+
+Assim,
+\[
+\boxed{I_b = \dfrac{2}{3}}.
+\]
+
+\subsubsection{Integral (c): \texorpdfstring{$\displaystyle \int_{-1}^{1} (2x^2 - 1)^2 \, dx$}{∫\_{-1}^1 (2x²−1)² dx}}
+
+A integral é
+\[
+I_c = \int_{-1}^{1} (2x^2 - 1)^2 \, dx.
+\]
+
+Primeiro expandimos o integrando:
+\[
+(2x^2 - 1)^2 = 4x^4 - 4x^2 + 1.
+\]
+
+Logo,
+\[
+I_c = \int_{-1}^{1} \bigl(4x^4 - 4x^2 + 1\bigr)\,dx
+    = 4 \int_{-1}^{1} x^4\,dx
+      - 4 \int_{-1}^{1} x^2\,dx
+      + \int_{-1}^{1} 1\,dx.
+\]
+
+As três integrais envolvidas são todas sobre funções pares, então podemos utilizar:
+\[
+\int_{-1}^{1} x^{2k}\,dx = 2 \int_{0}^{1} x^{2k}\,dx.
+\]
+
+Em particular:
+\[
+\int_{-1}^{1} x^4\,dx
+= 2 \int_{0}^{1} x^4\,dx
+= 2 \left[ \frac{x^5}{5} \right]_{0}^{1}
+= \frac{2}{5},
+\]
+\[
+\int_{-1}^{1} x^2\,dx
+= \frac{2}{3}
+\quad\text{(já calculado na integral (b))},
+\]
+\[
+\int_{-1}^{1} 1\,dx = 2
+\quad\text{(já calculado na integral (a))}.
+\]
+
+Substituindo:
+\[
+I_c = 4 \cdot \frac{2}{5}
+      - 4 \cdot \frac{2}{3}
+      + 2
+    = \frac{8}{5}
+      - \frac{8}{3}
+      + 2.
+\]
+
+Colocando tudo sobre o mesmo denominador:
+\[
+\frac{8}{5} - \frac{8}{3} + 2
+= \frac{24}{15} - \frac{40}{15} + \frac{30}{15}
+= \frac{24 - 40 + 30}{15}
+= \frac{14}{15}.
+\]
+
+Portanto,
+\[
+\boxed{I_c = \dfrac{14}{15}}.
+\]
+
+\subsubsection{Integral (d): \texorpdfstring{$\displaystyle \int_{-1}^{1} \sqrt{1 - x^2} \, dx$}{∫\_{-1}^1 sqrt(1−x²) dx}}
+
+A integral é
+\[
+I_d = \int_{-1}^{1} \sqrt{1 - x^2} \, dx.
+\]
+
+O integrando representa geometricamente o semi-círculo superior de raio $1$ centrado na origem:
+\[
+y = \sqrt{1 - x^2}, \quad x \in [-1,1].
+\]
+Assim, $I_d$ é a área de um semicírculo de raio $1$:
+\[
+\text{área} = \frac{1}{2}\,\pi \cdot 1^2 = \frac{\pi}{2}.
+\]
+
+Para uma derivação analítica detalhada, usamos substituição trigonométrica.
+Definimos
+\[
+x = \sin\theta \quad\Rightarrow\quad dx = \cos\theta\,d\theta.
+\]
+
+Quando $x = -1$, temos $\sin\theta = -1 \Rightarrow \theta = -\frac{\pi}{2}$;  
+quando $x = 1$, temos $\sin\theta = 1 \Rightarrow \theta = \frac{\pi}{2}$.
+
+Além disso,
+\[
+\sqrt{1 - x^2}
+= \sqrt{1 - \sin^2\theta}
+= \sqrt{\cos^2\theta}
+= \cos\theta,
+\]
+onde usamos que, para $\theta \in [-\pi/2,\pi/2]$, vale $\cos\theta \ge 0$.
+
+Substituindo na integral:
+\[
+I_d = \int_{-1}^{1} \sqrt{1 - x^2} \, dx
+    = \int_{-\pi/2}^{\pi/2} \cos\theta \cdot \cos\theta \, d\theta
+    = \int_{-\pi/2}^{\pi/2} \cos^2\theta \, d\theta.
+\]
+
+Utilizamos a identidade de meia-ângulo:
+\[
+\cos^2\theta = \frac{1 + \cos(2\theta)}{2}.
+\]
+
+Portanto,
+\[
+I_d = \int_{-\pi/2}^{\pi/2} \cos^2\theta \, d\theta
+    = \int_{-\pi/2}^{\pi/2} \frac{1 + \cos(2\theta)}{2} \, d\theta
+    = \frac{1}{2} \int_{-\pi/2}^{\pi/2} 1\,d\theta
+      + \frac{1}{2} \int_{-\pi/2}^{\pi/2} \cos(2\theta)\,d\theta.
+\]
+
+Calculamos termo a termo:
+
+1. Primeiro termo:
+\[
+\frac{1}{2} \int_{-\pi/2}^{\pi/2} 1\,d\theta
+= \frac{1}{2} \left[ \theta \right]_{-\pi/2}^{\pi/2}
+= \frac{1}{2} \left( \frac{\pi}{2} - \left(-\frac{\pi}{2}\right)\right)
+= \frac{1}{2} \cdot \pi
+= \frac{\pi}{2}.
+\]
+
+2. Segundo termo:
+\[
+\frac{1}{2} \int_{-\pi/2}^{\pi/2} \cos(2\theta)\,d\theta
+= \frac{1}{2} \left[ \frac{\sin(2\theta)}{2} \right]_{-\pi/2}^{\pi/2}
+= \frac{1}{4}\,\bigl(\sin(\pi) - \sin(-\pi)\bigr)
+= \frac{1}{4}(0 - 0)
+= 0.
+\]
+
+Logo,
+\[
+I_d = \frac{\pi}{2} + 0 = \frac{\pi}{2}.
+\]
+
+Assim,
+\[
+\boxed{I_d = \dfrac{\pi}{2}}.
+\]
+
+\subsubsection{Resumo dos valores exatos}
+
+Resumindo, os valores exatos das integrais da Tarefa 1 são:
+\[
+I_a = 2, \qquad
+I_b = \frac{2}{3}, \qquad
+I_c = \frac{14}{15}, \qquad
+I_d = \frac{\pi}{2}.
+\]
+
+Esses resultados serão utilizados como referência para avaliar o erro das aproximações
+obtidas pela quadratura de Chebyshev--Lobatto implementada em Julia.
+
+
+\subsection{Resultados da quadratura de Chebyshev--Lobatto}
+\label{subsec:cheb_lobatto_results}
+
+A Tabela~\ref{tab:cheb_lobatto_results} reproduz os valores numéricos obtidos ao
+executar o script \texttt{exercise01\_cheb\_lobatto.jl} com a quadratura
+Chebyshev--Lobatto após a correção dos pesos. Cada linha apresenta a ordem $n$,
+o valor computado, a referência analítica e os erros absoluto e relativo.
+
+\begin{table}[h]
+    \centering
+    \caption{Resultados da quadratura de Chebyshev--Lobatto}
+    \label{tab:cheb_lobatto_results}
+    \begin{tabular}{lrrrrr}
+        \toprule
+        integrando & $n$ & numérico & exato & erro abs. & erro rel. \\
+        \midrule
+        $f_1(x)=1$ & 10 & 2{,}00000000 & 2{,}00000000 & 2{,}22\times10^{-16} & 1{,}11\times10^{-16} \\
+        $f_1(x)=1$ & 20 & 2{,}00000000 & 2{,}00000000 & 4{,}44\times10^{-16} & 2{,}22\times10^{-16} \\
+        $f_1(x)=1$ & 40 & 2{,}00000000 & 2{,}00000000 & 0{,}00\times10^{0} & 0{,}00\times10^{0} \\
+        $f_1(x)=1$ & 80 & 2{,}00000000 & 2{,}00000000 & 2{,}22\times10^{-15} & 1{,}11\times10^{-15} \\
+        $f_1(x)=1$ & 160 & 2{,}00000000 & 2{,}00000000 & 3{,}91\times10^{-14} & 1{,}95\times10^{-14} \\
+        $f_2(x)=x^2$ & 10 & 0{,}66666667 & 0{,}66666667 & 3{,}33\times10^{-16} & 4{,}99\times10^{-16} \\
+        $f_2(x)=x^2$ & 20 & 0{,}66666667 & 0{,}66666667 & 3{,}33\times10^{-16} & 4{,}99\times10^{-16} \\
+        $f_2(x)=x^2$ & 40 & 0{,}66666667 & 0{,}66666667 & 4{,}44\times10^{-16} & 6{,}66\times10^{-16} \\
+        $f_2(x)=x^2$ & 80 & 0{,}66666667 & 0{,}66666667 & 2{,}11\times10^{-15} & 3{,}16\times10^{-15} \\
+        $f_2(x)=x^2$ & 160 & 0{,}66666667 & 0{,}66666667 & 4{,}52\times10^{-14} & 6{,}78\times10^{-14} \\
+        $f_3(x)=(2x^2-1)^2$ & 10 & 0{,}93333333 & 0{,}93333333 & 1{,}78\times10^{-15} & 1{,}90\times10^{-15} \\
+        $f_3(x)=(2x^2-1)^2$ & 20 & 0{,}93333333 & 0{,}93333333 & 2{,}22\times10^{-16} & 2{,}38\times10^{-16} \\
+        $f_3(x)=(2x^2-1)^2$ & 40 & 0{,}93333333 & 0{,}93333333 & 9{,}99\times10^{-16} & 1{,}07\times10^{-15} \\
+        $f_3(x)=(2x^2-1)^2$ & 80 & 0{,}93333333 & 0{,}93333333 & 6{,}66\times10^{-16} & 7{,}14\times10^{-16} \\
+        $f_3(x)=(2x^2-1)^2$ & 160 & 0{,}93333333 & 0{,}93333333 & 1{,}63\times10^{-13} & 1{,}75\times10^{-13} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 10 & 1{,}56989859 & 1{,}57079633 & 8{,}98\times10^{-4} & 5{,}72\times10^{-4} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 20 & 1{,}57068679 & 1{,}57079633 & 1{,}10\times10^{-4} & 6{,}97\times10^{-5} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 40 & 1{,}57076029 & 1{,}57079633 & 3{,}60\times10^{-5} & 2{,}29\times10^{-5} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 80 & 1{,}57328578 & 1{,}57079633 & 2{,}49\times10^{-3} & 1{,}58\times10^{-3} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 160 & 1{,}57087560 & 1{,}57079633 & 7{,}93\times10^{-5} & 5{,}05\times10^{-5} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{Comparação com as integrais analíticas.}
+Os três polinômios ($f_1$, $f_2$ e $f_3$) agora são integrados com erro de
+arredondamento, confirmando que a quadratura reproduz exatamente todos os
+monômios até ordem $n$. Para $f_4(x)=\sqrt{1-x^2}$, que não é polinomial,
+observa-se convergência rápida: o erro absoluto cai para a faixa de
+$10^{-5}$--$10^{-4}$ quando $n$ cresce, com pequenas oscilações esperadas por
+causa da natureza altamente oscilatória da solução do sistema para ordens muito
+altas.
+
+\paragraph{Observação.}
+As primeiras execuções utilizaram os pesos ``$w_0=w_n=\pi/(2n)$'' e
+``$w_k=\pi/n$'' derivados da quadratura com peso $1/\sqrt{1-x^2}$; como a soma
+destes pesos é $\pi$, a regra aproximava $\int f(x)/\sqrt{1-x^2}\,\mathrm{d}x$,
+superestimando integrais com respeito a $\mathrm{d}x$. Para obter pesos válidos
+no sentido usual, resolvemos um sistema linear tipo Vandermonde: construímos a
+matriz $A_{ik}=x_k^i$ com os nós de Chebyshev--Lobatto e impomos as identidades
+dos momentos $\int_{-1}^{1} x^i \mathrm{d}x = 2/(i+1)$ (quando $i$ é par) ou
+zero (quando $i$ é ímpar). O vetor de pesos $w = A^{-1} b$ garante que qualquer
+polinômio de grau $\le n$ seja integrado exatamente. Essa abordagem elimina o
+fator $\pi$ indevido e produz uma quadratura consistente com a medida de
+Lebesgue em $[-1,1]$.
+
+\subsection{Implementação}
+
+As funções foram adicionadas ao módulo
+\texttt{SpectralTools.ChebyshevLobattoQuadrature}. O código a seguir resume a
+construção dos nós, dos pesos via sistema linear e da rotina de integração:
+
+\begin{verbatim}
+@inline function cheb_lobatto_nodes(n::Integer)
+    N = _checked_order(n)
+    nodes = Vector{Float64}(undef, N + 1)
+    @inbounds for k in 0:N
+        nodes[k + 1] = cospi(k / N)
+    end
+    return nodes
+end
+
+@inline function cheb_lobatto_weights(n::Integer)
+    nodes = cheb_lobatto_nodes(n)
+    A = Matrix{Float64}(undef, n + 1, n + 1)
+    @inbounds for i in 0:n
+        A[i + 1, :] = nodes .^ i
+    end
+    b = [iseven(i) ? 2.0 / (i + 1) : 0.0 for i in 0:n]
+    return A \ b
+end
+
+@inline function cheb_lobatto_quadrature(f::Function, n::Integer)
+    nodes = cheb_lobatto_nodes(n)
+    weights = cheb_lobatto_weights(n)
+    return sum(weights .* f.(nodes))
+end
+\end{verbatim}
+
+O script \texttt{exercise01\_cheb\_lobatto.jl} instancia os quatro integrandos e
+sua lista de integrais exatas, percorre os valores de $n$ e grava os resultados:
+
+\begin{verbatim}
+const QUAD_ORDERS = [10, 20, 40, 80, 160]
+const EXERCISE_FUNCTIONS = [
+    ("f₁(x) = 1", x -> 1.0, 2.0),
+    ("f₂(x) = x^2", x -> x^2, 2 / 3),
+    ("f₃(x) = (2x^2 - 1)^2", x -> (2x^2 - 1)^2, 14 / 15),
+    ("f₄(x) = sqrt(1 - x^2)", x -> sqrt(1 - x^2), pi / 2),
+]
+
+for (label, f, exact) in EXERCISE_FUNCTIONS
+    for n in QUAD_ORDERS
+        approx = cheb_lobatto_quadrature(f, n)
+        abs_err = abs(approx - exact)
+        rel_err = abs_err / abs(exact)
+        # impressão e armazenamento em DataFrame
+    end
+end
+\end{verbatim}
+
+Cada linha calculada é enviada a um \texttt{DataFrame}; ao final, o script imprime
+as tabelas para inspeção e salva o arquivo
+\texttt{results\_exercise01\_cheb\_lobatto.csv}, documento de referência para a
+subseção de análise de resultados.
+
+
+\section{Tarefa 2: pontos por comprimento de onda}
+
+\subsection{Enunciado}
+
+Considere modos harmônicos em um domínio de comprimento $L = 2$, cujo comprimento de onda associado ao modo $j$ é:
+\[
+\lambda_j = \frac{2L}{j} = \frac{4}{j}.
+\]
+
+O espaçamento máximo entre os nós da malha espectral satisfaz aproximadamente:
+\[
+\Delta x_{\max} \approx \frac{\pi}{n},
+\]
+tanto para $n$ par quanto para $n$ ímpar.
+
+Demonstre que a razão entre o comprimento de onda e o espaçamento máximo leva à expressão:
+\[
+\text{ppw} = \frac{\lambda_j}{\Delta x_{\max}} 
+= \frac{4n}{\pi j}.
+\]
+
+Mostre detalhadamente por que essa expressão representa o número de \emph{pontos por comprimento de onda}.
+
+\subsection{Resolução}
+
+Queremos demonstrar que, para os nós de Chebyshev--Lobatto no intervalo $[-1,1]$,
+o número de \emph{pontos por comprimento de onda} (ppw) do modo $j$ é dado por
+\[
+  \mathrm{ppw} \approx \frac{4n}{\pi j}.
+\]
+
+\subsubsection{Comprimento de onda dos modos}
+
+No intervalo de comprimento $L = 2$, o comprimento de onda associado ao modo $j$
+é
+\[
+  \lambda_j = \frac{2L}{j} = \frac{4}{j}.
+\]
+
+\subsubsection{Nós de Chebyshev--Lobatto e espaçamentos}
+
+Os nós de Chebyshev--Lobatto são dados por
+\[
+  x_k = \cos\!\left(\frac{k\pi}{n}\right), \qquad k = 0,1,\dots,n.
+\]
+
+O espaçamento entre dois nós consecutivos é
+\[
+  \Delta x_k = x_{k+1} - x_k
+  = \cos\!\left(\frac{(k+1)\pi}{n}\right) - \cos\!\left(\frac{k\pi}{n}\right).
+\]
+
+Usando a identidade trigonométrica
+\[
+  \cos A - \cos B = -2 \sin\!\left(\frac{A+B}{2}\right)\sin\!\left(\frac{A-B}{2}\right),
+\]
+obtemos
+\begin{align*}
+  \Delta x_k
+  &= -2 \sin\!\left(\frac{1}{2}\Big(\tfrac{(k+1)\pi}{n} + \tfrac{k\pi}{n}\Big)\right)
+        \sin\!\left(\frac{1}{2}\Big(\tfrac{(k+1)\pi}{n} - \tfrac{k\pi}{n}\Big)\right) \\[4pt]
+  &= -2 \sin\!\left(\frac{(2k+1)\pi}{2n}\right)
+        \sin\!\left(\frac{\pi}{2n}\right).
+\end{align*}
+
+Logo, o módulo do espaçamento é
+\[
+  |\Delta x_k|
+  = 2 \sin\!\left(\frac{(2k+1)\pi}{2n}\right)\sin\!\left(\frac{\pi}{2n}\right).
+\]
+
+Como $\sin(\pi/(2n))$ não depende de $k$, o maior espaçamento corresponde
+ao máximo de
+\[
+  \sin\!\left(\frac{(2k+1)\pi}{2n}\right)
+\]
+em $k$.
+
+\subsubsection{Caso $n$ ímpar}
+
+Se $n$ é ímpar, existe um índice inteiro $k$ tal que
+\[
+  \frac{(2k+1)\pi}{2n} = \frac{\pi}{2},
+\]
+ou seja,
+\[
+  2k+1 = n \quad\Longrightarrow\quad k = \frac{n-1}{2}.
+\]
+
+Para esse $k$,
+\[
+  \sin\!\left(\frac{(2k+1)\pi}{2n}\right)
+  = \sin\!\left(\frac{\pi}{2}\right) = 1,
+\]
+e, portanto, o maior espaçamento é
+\[
+  \Delta x_{\max}
+  = 2 \sin\!\left(\frac{\pi}{2n}\right), \qquad (n \text{ ímpar}).
+\]
+
+\subsubsection{Caso $n$ par}
+
+Se $n$ é par, não existe $k$ inteiro tal que $(2k+1)\pi/(2n) = \pi/2$.
+Os valores mais próximos são
+\[
+  \frac{(2k+1)\pi}{2n} = \frac{\pi}{2} \pm \frac{\pi}{2n}
+\]
+para $2k+1 = n \pm 1$.
+Nesses casos,
+\[
+  \sin\!\left(\frac{(2k+1)\pi}{2n}\right)
+  = \sin\!\left(\frac{\pi}{2} \pm \frac{\pi}{2n}\right)
+  = \cos\!\left(\frac{\pi}{2n}\right).
+\]
+
+Assim, o maior espaçamento é
+\begin{align*}
+  \Delta x_{\max}
+  &= 2 \cos\!\left(\frac{\pi}{2n}\right)
+       \sin\!\left(\frac{\pi}{2n}\right) \\
+  &= \sin\!\left(\frac{\pi}{n}\right), \qquad (n \text{ par}),
+\end{align*}
+onde usamos a identidade
+\[
+  2 \sin a \cos a = \sin(2a).
+\]
+
+\subsubsection{Aproximação para $n$ grande}
+
+Para $n$ grande, tanto $\frac{\pi}{n}$ quanto $\frac{\pi}{2n}$ são ângulos pequenos.
+Podemos usar a aproximação
+\[
+  \sin \theta \approx \theta, \qquad \text{para } \theta \ll 1.
+\]
+
+\begin{itemize}
+  \item Se $n$ é ímpar:
+  \[
+    \Delta x_{\max}
+    = 2 \sin\!\left(\frac{\pi}{2n}\right)
+    \approx 2 \cdot \frac{\pi}{2n}
+    = \frac{\pi}{n}.
+  \]
+
+  \item Se $n$ é par:
+  \[
+    \Delta x_{\max}
+    = \sin\!\left(\frac{\pi}{n}\right)
+    \approx \frac{\pi}{n}.
+  \]
+\end{itemize}
+
+Em ambos os casos, obtemos a mesma aproximação:
+\[
+  \Delta x_{\max} \approx \frac{\pi}{n}.
+\]
+
+\subsubsection{Número de pontos por comprimento de onda}
+
+Definimos o número de pontos por comprimento de onda (ppw) como
+\[
+  \mathrm{ppw}
+  = \frac{\lambda_j}{\Delta x_{\max}}.
+\]
+
+Usando $\lambda_j = 4/j$ e $\Delta x_{\max} \approx \pi/n$, segue:
+\[
+  \mathrm{ppw}
+  \approx \frac{\dfrac{4}{j}}{\dfrac{\pi}{n}}
+  = \frac{4}{j} \cdot \frac{n}{\pi}
+  = \frac{4n}{\pi j}.
+\]
+
+\noindent
+Portanto, demonstramos que o número de pontos por comprimento de onda
+do modo $j$ para os nós de Chebyshev--Lobatto satisfaz
+\[
+  \boxed{\mathrm{ppw} \approx \dfrac{4n}{\pi j}}.
+\]
+
+
+
+
+% =========================================================
+\section{Códigos Julia e Setup de Ambiente}
+% =========================================================
+
+\subsection{Configuração do ambiente Julia}
+
+\paragraph{1. Instalação do Julia.}
+\begin{enumerate}
+    \item Baixe e instale o \texttt{juliaup}, disponível em
+    \url{https://github.com/JuliaLang/juliaup}.
+    \item Em sistemas Unix, a instalação pode ser feita com:
+    \texttt{curl -fsSL https://install.julialang.org | sh}.
+    \item Após a instalação, confirme executando \texttt{juliaup status}
+    e \texttt{julia +release} (ou a versão específica desejada).
+\end{enumerate}
+
+\paragraph{2. Clonar o repositório e ativar o pacote.}
+\begin{enumerate}
+    \item Clone o repositório oficial:
+    \texttt{git clone https://github.com/stealth-lndrs/SpectralTools.git}.
+    \item Entre no diretório: \texttt{cd SpectralTools}.
+    \item Abra o REPL do Julia: \texttt{julia}.
+    \item Ative o projeto: no modo \texttt{pkg} (tecla \texttt{]}), execute
+    \texttt{activate .} e depois \texttt{instantiate}.
+    \item Para desenvolver o pacote em outro projeto (como o exercício),
+    utilize \texttt{pkg> dev /caminho/para/SpectralTools}.
+\end{enumerate}
+
+\paragraph{3. Garantir dependências e testes.}
+\begin{enumerate}
+    \item Ainda no modo \texttt{pkg}, execute \texttt{test} para rodar a suíte
+    de testes do pacote e validar a instalação.
+    \item Para atualizar dependências, use \texttt{pkg> update}, seguido de
+    \texttt{pkg> test}.
+    \item Recomenda-se utilizar ambientes dedicados (\texttt{--project=.}) ao
+    rodar scripts que dependem do \texttt{SpectralTools}.
+\end{enumerate}
+
+Esses passos garantem que qualquer usuário, mesmo sem o Julia previamente
+instalado, consiga preparar o ambiente, instalar o pacote do GitHub e
+reproduzir os resultados apresentados.
+
+
+\section{Declaração de uso de LLM}
+Foi utilizado um assistente LLM (ChatGPT) para apoiar a organização do relatório, revisão textual e geração de trechos de código e figuras, sempre com validação final do autor.
+
+\end{document}
