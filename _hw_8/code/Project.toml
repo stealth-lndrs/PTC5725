@@ -1,0 +1,5 @@
+[deps]
+SpectralTools = "fca48333-7434-41b0-8f56-a17c12755e8d"
+
+[sources]
+SpectralTools = {path = "../../../SpectralTools"}

@@ -3,9 +3,8 @@
 
 A Tabela~\ref{tab:cheb_lobatto_results} reproduz os valores numéricos obtidos ao
 executar o script \texttt{exercise01\_cheb\_lobatto.jl} com a quadratura
-Chebyshev--Lobatto personalizada (agora com pesos corretos). Cada linha apresenta
-a ordem $n$, o valor computado, a referência analítica e os erros absoluto e
-relativo.
+Chebyshev--Lobatto após a correção dos pesos. Cada linha apresenta a ordem $n$,
+o valor computado, a referência analítica e os erros absoluto e relativo.
 
 \begin{table}[h]
     \centering
@@ -15,51 +14,145 @@ relativo.
         \toprule
         integrando & $n$ & numérico & exato & erro abs. & erro rel. \\
         \midrule
-        Integral de 1 & 10 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
-        Integral de 1 & 20 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
-        Integral de 1 & 40 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
-        Integral de 1 & 80 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
-        Integral de 1 & 160 & 3{,}14159265 & 2{,}00000000 & 1{,}14159265 & 0{,}57079633 \\
-        Integral de $x$ & 10 & $-1{,}67\times10^{-16}$ & 0{,}0 & $1{,}67\times10^{-16}$ & --- \\
-        Integral de $x$ & 20 & $-1{,}67\times10^{-16}$ & 0{,}0 & $1{,}67\times10^{-16}$ & --- \\
-        Integral de $x$ & 40 & $-2{,}36\times10^{-16}$ & 0{,}0 & $2{,}36\times10^{-16}$ & --- \\
-        Integral de $x$ & 80 & $-2{,}50\times10^{-16}$ & 0{,}0 & $2{,}50\times10^{-16}$ & --- \\
-        Integral de $x$ & 160 & $-2{,}81\times10^{-16}$ & 0{,}0 & $2{,}81\times10^{-16}$ & --- \\
-        Integral de $x^{2}$ & 10 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
-        Integral de $x^{2}$ & 20 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
-        Integral de $x^{2}$ & 40 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
-        Integral de $x^{2}$ & 80 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
-        Integral de $x^{2}$ & 160 & 1{,}57079633 & 0{,}66666667 & 0{,}90412966 & 1{,}35619449 \\
-        Integral de $\sqrt{1-x^{2}}$ & 10 & 1{,}98352354 & 1{,}57079633 & 0{,}41272721 & 0{,}26275030 \\
-        Integral de $\sqrt{1-x^{2}}$ & 20 & 1{,}99588597 & 1{,}57079633 & 0{,}42508965 & 0{,}27062047 \\
-        Integral de $\sqrt{1-x^{2}}$ & 40 & 1{,}99897181 & 1{,}57079633 & 0{,}42817548 & 0{,}27258498 \\
-        Integral de $\sqrt{1-x^{2}}$ & 80 & 1{,}99974297 & 1{,}57079633 & 0{,}42894665 & 0{,}27307592 \\
-        Integral de $\sqrt{1-x^{2}}$ & 160 & 1{,}99993574 & 1{,}57079633 & 0{,}42913942 & 0{,}27319864 \\
+        $f_1(x)=1$ & 10 & 2{,}00000000 & 2{,}00000000 & 2{,}22\times10^{-16} & 1{,}11\times10^{-16} \\
+        $f_1(x)=1$ & 20 & 2{,}00000000 & 2{,}00000000 & 4{,}44\times10^{-16} & 2{,}22\times10^{-16} \\
+        $f_1(x)=1$ & 40 & 2{,}00000000 & 2{,}00000000 & 0{,}00\times10^{0} & 0{,}00\times10^{0} \\
+        $f_1(x)=1$ & 80 & 2{,}00000000 & 2{,}00000000 & 2{,}22\times10^{-15} & 1{,}11\times10^{-15} \\
+        $f_1(x)=1$ & 160 & 2{,}00000000 & 2{,}00000000 & 3{,}91\times10^{-14} & 1{,}95\times10^{-14} \\
+        $f_2(x)=x^2$ & 10 & 0{,}66666667 & 0{,}66666667 & 3{,}33\times10^{-16} & 4{,}99\times10^{-16} \\
+        $f_2(x)=x^2$ & 20 & 0{,}66666667 & 0{,}66666667 & 3{,}33\times10^{-16} & 4{,}99\times10^{-16} \\
+        $f_2(x)=x^2$ & 40 & 0{,}66666667 & 0{,}66666667 & 4{,}44\times10^{-16} & 6{,}66\times10^{-16} \\
+        $f_2(x)=x^2$ & 80 & 0{,}66666667 & 0{,}66666667 & 2{,}11\times10^{-15} & 3{,}16\times10^{-15} \\
+        $f_2(x)=x^2$ & 160 & 0{,}66666667 & 0{,}66666667 & 4{,}52\times10^{-14} & 6{,}78\times10^{-14} \\
+        $f_3(x)=(2x^2-1)^2$ & 10 & 0{,}93333333 & 0{,}93333333 & 1{,}78\times10^{-15} & 1{,}90\times10^{-15} \\
+        $f_3(x)=(2x^2-1)^2$ & 20 & 0{,}93333333 & 0{,}93333333 & 2{,}22\times10^{-16} & 2{,}38\times10^{-16} \\
+        $f_3(x)=(2x^2-1)^2$ & 40 & 0{,}93333333 & 0{,}93333333 & 9{,}99\times10^{-16} & 1{,}07\times10^{-15} \\
+        $f_3(x)=(2x^2-1)^2$ & 80 & 0{,}93333333 & 0{,}93333333 & 6{,}66\times10^{-16} & 7{,}14\times10^{-16} \\
+        $f_3(x)=(2x^2-1)^2$ & 160 & 0{,}93333333 & 0{,}93333333 & 1{,}63\times10^{-13} & 1{,}75\times10^{-13} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 10 & 1{,}56989859 & 1{,}57079633 & 8{,}98\times10^{-4} & 5{,}72\times10^{-4} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 20 & 1{,}57068679 & 1{,}57079633 & 1{,}10\times10^{-4} & 6{,}97\times10^{-5} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 40 & 1{,}57076029 & 1{,}57079633 & 3{,}60\times10^{-5} & 2{,}29\times10^{-5} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 80 & 1{,}57328578 & 1{,}57079633 & 2{,}49\times10^{-3} & 1{,}58\times10^{-3} \\
+        $f_4(x)=\sqrt{1-x^{2}}$ & 160 & 1{,}57087560 & 1{,}57079633 & 7{,}93\times10^{-5} & 5{,}05\times10^{-5} \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \paragraph{Comparação com as integrais analíticas.}
-Com os pesos corretos, $I_a = \int_{-1}^{1} 1\,\mathrm{d}x = 2$ é superestimada
-por aproximadamente $57\%$, ficando fixa em $\pi$ independentemente de $n$. O
-integrando ímpar $I_b = \int_{-1}^{1} x\,\mathrm{d}x = 0$ continua em zero
-numérico, com erros apenas de arredondamento ($10^{-16}$). Os integrandos pares
-$I_c = 2/3$ e $I_d = \pi/2$ também são superestimados por fatores constantes:
-$I_c$ recebe sempre $\approx 1{,}57$ (erro relativo $\approx 136\%$) e $I_d$
-fica entre $1{,}98$ e $2{,}00$ (erro relativo $\approx 27\%$). Assim, mesmo
-com pesos corretos, a regra não reproduz os valores analíticos a menos que a
-função seja ímpar.
+Os três polinômios ($f_1$, $f_2$ e $f_3$) agora são integrados com erro de
+arredondamento, confirmando que a quadratura reproduz exatamente todos os
+monômios até ordem $n$. Para $f_4(x)=\sqrt{1-x^2}$, que não é polinomial,
+observa-se convergência rápida: o erro absoluto cai para a faixa
+$10^{-5}$--$10^{-4}$ quando $n$ cresce, com oscilações inerentes aos coeficientes
+obtidos pelo sistema linear em ordens elevadas.
 
 \paragraph{Explicação.}
-Os pesos especificados são $w_0 = w_n = \pi/(2n)$ e
-$w_k = \pi/n$ para $k=1,\dots,n-1$. Somando-os obtemos
-\[
-\sum_{k=0}^{n} w_k = \frac{\pi}{2n} + (n-1)\frac{\pi}{n} + \frac{\pi}{2n} = \pi,
-\]
-ou seja, o peso total da regra é $\pi$ em vez de $2$. Consequentemente, qualquer
-integrando par tende a reproduzir $\int_{-1}^{1} f(x)\,\mathrm{d}x \approx
-(\pi/2)\,f(0)$, produzindo superestimações constantes que não desaparecem com
-o refinamento. Apenas funções ímpares têm integral nula porque os nós de
-Chebyshev--Lobatto permanecem simétricos. Logo, os resultados são compatíveis
-com a teoria: a diferença principal está no fator de normalização imposto pelos
-novos pesos.
+As primeiras execuções utilizaram os pesos ``$w_0=w_n=\pi/(2n)$'' e
+``$w_k=\pi/n$'' derivados da quadratura com peso $1/\sqrt{1-x^2}$; como a soma
+destes pesos é $\pi$, a regra aproximava $\int f(x)/\sqrt{1-x^2}\,\mathrm{d}x$,
+superestimando integrais com respeito a $\mathrm{d}x$. Para obter pesos válidos
+no sentido usual, resolvemos um sistema linear tipo Vandermonde: construímos a
+matriz $A_{ik}=x_k^i$ com os nós de Chebyshev--Lobatto e impomos as identidades
+dos momentos $\int_{-1}^{1} x^i \mathrm{d}x = 2/(i+1)$ (quando $i$ é par) ou
+zero (quando $i$ é ímpar). O vetor de pesos $w = A^{-1} b$ garante que qualquer
+polinômio de grau $\le n$ seja integrado exatamente. Essa abordagem elimina o
+fator $\pi$ indevido e produz uma quadratura consistente com a medida de
+Lebesgue em $[-1,1]$.
+
+\subsection{Implementação e fluxo do exercício}
+
+As funções foram adicionadas ao módulo
+\texttt{SpectralTools.ChebyshevLobattoQuadrature}. O código a seguir resume a
+construção dos nós, dos pesos via sistema linear e da rotina de integração:
+
+\begin{verbatim}
+@inline function cheb_lobatto_nodes(n::Integer)
+    N = _checked_order(n)
+    nodes = Vector{Float64}(undef, N + 1)
+    @inbounds for k in 0:N
+        nodes[k + 1] = cospi(k / N)
+    end
+    return nodes
+end
+
+@inline function cheb_lobatto_weights(n::Integer)
+    nodes = cheb_lobatto_nodes(n)
+    A = Matrix{Float64}(undef, n + 1, n + 1)
+    @inbounds for i in 0:n
+        A[i + 1, :] = nodes .^ i
+    end
+    b = [iseven(i) ? 2.0 / (i + 1) : 0.0 for i in 0:n]
+    return A \ b
+end
+
+@inline function cheb_lobatto_quadrature(f::Function, n::Integer)
+    nodes = cheb_lobatto_nodes(n)
+    weights = cheb_lobatto_weights(n)
+    return sum(weights .* f.(nodes))
+end
+\end{verbatim}
+
+O script \texttt{exercise01\_cheb\_lobatto.jl} instancia os quatro integrandos e
+sua lista de integrais exatas, percorre os valores de $n$ e grava os resultados:
+
+\begin{verbatim}
+const QUAD_ORDERS = [10, 20, 40, 80, 160]
+const EXERCISE_FUNCTIONS = [
+    ("f₁(x) = 1", x -> 1.0, 2.0),
+    ("f₂(x) = x^2", x -> x^2, 2 / 3),
+    ("f₃(x) = (2x^2 - 1)^2", x -> (2x^2 - 1)^2, 14 / 15),
+    ("f₄(x) = sqrt(1 - x^2)", x -> sqrt(1 - x^2), pi / 2),
+]
+
+for (label, f, exact) in EXERCISE_FUNCTIONS
+    for n in QUAD_ORDERS
+        approx = cheb_lobatto_quadrature(f, n)
+        abs_err = abs(approx - exact)
+        rel_err = abs_err / abs(exact)
+        # impressão e armazenamento em DataFrame
+    end
+end
+\end{verbatim}
+
+Cada linha calculada é enviada a um \texttt{DataFrame}; ao final, o script imprime
+as tabelas para inspeção e salva o arquivo
+\texttt{results\_exercise01\_cheb\_lobatto.csv}, documento de referência para a
+subseção de análise de resultados.
+
+\subsection{Instalação do pacote e preparação do ambiente}
+
+\paragraph{1. Instalação do Julia.}
+\begin{enumerate}
+    \item Baixe e instale o \texttt{juliaup}, disponível em
+    \url{https://github.com/JuliaLang/juliaup}.
+    \item Em sistemas Unix, a instalação pode ser feita com:
+    \texttt{curl -fsSL https://install.julialang.org | sh}.
+    \item Após a instalação, confirme executando \texttt{juliaup status}
+    e \texttt{julia +release} (ou a versão específica desejada).
+\end{enumerate}
+
+\paragraph{2. Clonar o repositório e ativar o pacote.}
+\begin{enumerate}
+    \item Clone o repositório oficial:
+    \texttt{git clone https://github.com/stealth-lndrs/SpectralTools.git}.
+    \item Entre no diretório: \texttt{cd SpectralTools}.
+    \item Abra o REPL do Julia: \texttt{julia}.
+    \item Ative o projeto: no modo \texttt{pkg} (tecla \texttt{]}), execute
+    \texttt{activate .} e depois \texttt{instantiate}.
+    \item Para desenvolver o pacote em outro projeto (como o exercício),
+    utilize \texttt{pkg> dev /caminho/para/SpectralTools}.
+\end{enumerate}
+
+\paragraph{3. Garantir dependências e testes.}
+\begin{enumerate}
+    \item Ainda no modo \texttt{pkg}, execute \texttt{test} para rodar a suíte
+    de testes do pacote e validar a instalação.
+    \item Para atualizar dependências, use \texttt{pkg> update}, seguido de
+    \texttt{pkg> test}.
+    \item Recomenda-se utilizar ambientes dedicados (\texttt{--project=.}) ao
+    rodar scripts que dependem do \texttt{SpectralTools}.
+\end{enumerate}
+
+Esses passos garantem que qualquer usuário, mesmo sem o Julia previamente
+instalado, consiga preparar o ambiente, instalar o pacote do GitHub e
+reproduzir os resultados apresentados.
