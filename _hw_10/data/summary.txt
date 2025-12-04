@@ -1,0 +1,18 @@
+Caso: anisotropic
+  Erro máximo (malha Chebyshev): 7.9936e-15
+  Erro L2 (malha Chebyshev): 1.9736e-15
+  Erro máximo (malha uniforme): 1.1546e-14
+  Erro L2 (malha uniforme): 2.6655e-15
+
+Caso: isotropic_15
+  Erro máximo (malha Chebyshev): 1.6875e-14
+  Erro L2 (malha Chebyshev): 4.1299e-15
+  Erro máximo (malha uniforme): 2.0428e-14
+  Erro L2 (malha uniforme): 5.0904e-15
+
+Caso: isotropic_20
+  Erro máximo (malha Chebyshev): 1.0658e-14
+  Erro L2 (malha Chebyshev): 2.2429e-15
+  Erro máximo (malha uniforme): 1.5099e-14
+  Erro L2 (malha uniforme): 2.6013e-15
+
